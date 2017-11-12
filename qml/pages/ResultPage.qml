@@ -26,7 +26,7 @@ Page {
 
     allowedOrientations: Orientation.All
 
-    property string resultPathString: "foo"
+    property string resultPathString
 
     SilicaFlickable {
         anchors.fill: parent
