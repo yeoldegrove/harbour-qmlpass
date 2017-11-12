@@ -60,6 +60,12 @@ Page {
                 font.pixelSize: Theme.fontSizeExtraLarge
             }
 
+            // need this object to delete clipboard after 30 seconds
+            Timer {
+                id: timer
+            }
+
+
             TextField {
                 id: resultPath
                 label: "path"
@@ -82,6 +88,29 @@ Page {
                 echoMode: TextInput.Password
                 onPressAndHold: { echoMode: TextInput.Normal}
                 readOnly: true
+                // TODO: do the password clearing easier if possible
+                onClicked: {
+                    Clipboard.text = resultPassword.text
+                    py.call('passwordstore.passwordstore.show_pass', [resultPathString], function(result){
+                        function delay(delayTime, cb) {
+                            timer.interval = delayTime;
+                            timer.repeat = false;
+                            timer.triggered.connect(cb);
+                            timer.start();
+                        }
+                        // WARNING!!! SHOWS PASSWORD IN CLEARTEXT IN DEBUG OUTPUT !!!
+                        //console.log('got password: ' + result);
+                        if (result.length > 0) {
+                           resultPassword.text = result;
+                           Clipboard.text = result;
+                        }
+                        // wait 30 seconds and delete password from clipboard
+                        delay(30000, function() {
+                            Clipboard.text = ""
+                        })
+                    });
+                    info.text = "password has been copied to clipboard.\nIt will be cleared after 30 seconds."
+                }
             }
             TextField {
                 id: resultUrl
@@ -90,8 +119,9 @@ Page {
                 text: "                              "
             }
             Label {
+                id: info
                 x: Theme.horizontalPageMargin
-                text: qsTr("password has been copied to clipboard.\nUse pulldown to show it.")
+                text: qsTr("password has been copied to clipboard.\nIt will be cleared after 30 seconds.\n\nUse pulldown to show password.")
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeMedium
             }
@@ -125,6 +155,10 @@ Page {
                         resultPassword.text = result;
                         Clipboard.text = result;
                      }
+                     // wait 30 seconds and delete password from clipboard
+                     delay(30000, function() {
+                         Clipboard.text = ""
+                     })
                  });
             });
             importModule('passwordstore', function() {
@@ -142,6 +176,13 @@ Page {
             setHandler('stderr', function(stderr) {
                 console.log('stderr:' + stderr)
             });
+
+            function delay(delayTime, cb) {
+                timer.interval = delayTime;
+                timer.repeat = false;
+                timer.triggered.connect(cb);
+                timer.start();
+            }
         }
 
         onError: {
