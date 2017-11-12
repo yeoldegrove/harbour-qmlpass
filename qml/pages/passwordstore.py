@@ -43,7 +43,6 @@ class passwordstore():
 
     def show_login(input):
         output = []
-        print("input: " + input)
         # find all files matching input and end with .gpg
         cmd = "pass show " + input + " | grep '^login:'"
         print(cmd)
@@ -58,10 +57,8 @@ class passwordstore():
 
     def show_pass(input):
         output = []
-        print("input: " + input)
         # find all files matching input and end with .gpg
         cmd = "pass show " + input + " | head -1"
-        print(cmd)
         p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
         # comment in for debugging, elsewise pw is in cleartext in debug log
