@@ -17,12 +17,14 @@ I developed it for SailfishOS 2.1.3.7 (Kymijoki).
 * create initial gpg-agent config
 * kill gpg-agent
 * cache passphrases for GPG keys
+* pull from git
+* timeout on copy to clipboard
 
 ### features that may come
 * add/delete passwords
-* sync to git
+* ~~sync to git~~ push to git
 * edit gpg-agent config (e.g. adjust timeouts)
-* timeout on copy to clipboard
+* ~~timeout on copy to clipboard~~
 
 This shall be a simple fronted and not a swiss army knife to do all the pass/GPG stuff, so here are some...
 
