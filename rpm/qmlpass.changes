@@ -1,2 +1,7 @@
+* Sun Nov 12 2017 Eike Waldt <jolla@yeoldegrove.de> 0.0.2-1
+- add initial git pull
+- add click to copy for results
+- introduced timeout after password copy to clipboard
+
 * Sun Nov 05 2017 Eike Waldt <jolla@yeoldegrove.de> 0.0.1-1
 - initial release
