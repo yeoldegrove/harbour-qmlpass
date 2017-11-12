@@ -71,13 +71,18 @@ Page {
                 label: "path"
                 placeholderText: "path..."
                 text: resultPathString
+                readOnly: true
             }
-
             TextField {
                 id: resultLogin
                 label: "login"
                 placeholderText: "login..."
                 text: "                              "
+                readOnly: true
+                onClicked: {
+                    Clipboard.text = resultLogin.text
+                    info.text = "login copied to clipboard"
+                }
             }
             PasswordField {
                 id: resultPassword
@@ -86,7 +91,6 @@ Page {
                 //text: resultPasswordString
                 text: "                              "
                 echoMode: TextInput.Password
-                onPressAndHold: { echoMode: TextInput.Normal}
                 readOnly: true
                 // TODO: do the password clearing easier if possible
                 onClicked: {
@@ -117,6 +121,11 @@ Page {
                 label: "url"
                 placeholderText: "url..."
                 text: "                              "
+                readOnly: true
+                onClicked: {
+                    Clipboard.text = resultUrl.text
+                    info.text = "url copied to clipboard"
+                }
             }
             Label {
                 id: info
@@ -125,9 +134,6 @@ Page {
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeMedium
             }
-
-
-
 
         }
 
