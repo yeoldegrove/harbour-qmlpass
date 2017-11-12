@@ -35,6 +35,15 @@ Page {
                 text: qsTr("mange passphrase / gpg-agent")
                 onClicked: pageStack.push(Qt.resolvedUrl("PassphrasePage.qml"))
             }
+            MenuItem {
+                text: qsTr("git pull")
+                onClicked: py.call('passwordstore.passwordstore.git_pull',[],
+                                   function(result){
+                                       listModel.clear();
+                                       log.text = result
+                                   }
+                               );
+            }
         }
 
         contentHeight: column.height
@@ -106,6 +115,10 @@ Page {
                 }
             }
 
+            TextField {
+                id: log
+                readOnly: true
+            }
 
         }
 

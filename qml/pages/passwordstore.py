@@ -74,10 +74,21 @@ class passwordstore():
 
     def show_url(input):
         output = []
-        print("input: " + input)
         # find all files matching input and end with .gpg
         cmd = "pass show " + input + " | grep '^url:'"
-        print(cmd)
+        p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
+        out, err = p.communicate()
+        pyotherside.send('stdout', out)
+        pyotherside.send('stderr', err)
+        # replace some strings (login: )
+        out_replace = out.decode('utf-8').replace('url: ','')
+        output = out_replace
+        return output
+
+    def git_pull():
+        output = []
+        # find all files matching input and end with .gpg
+        cmd = "cd  /home/nemo/.password-store && git pull"
         p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
         pyotherside.send('stdout', out)
