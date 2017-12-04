@@ -1,3 +1,10 @@
+* Mon Dec 04 2017 Eike Waldt <jolla@yeoldegrove.de> 0.0.3-1
+- add feature: gpg-agent config
+ - create default config
+ - reset values to default
+ - edit config by hand
+- some cosmetic changes for results page
+
 * Sun Nov 12 2017 Eike Waldt <jolla@yeoldegrove.de> 0.0.2-1
 - add initial git pull
 - add click to copy for results
