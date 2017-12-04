@@ -27,8 +27,8 @@ Page {
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
-    property string uid: name
-    property string passphrase: inputPassphrase.text
+    property string uid//: name
+    property string passphrase//: inputPassphrase.text
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
@@ -137,7 +137,9 @@ Page {
                     }
                 }
             }
+
             Label {
+                id: explanations
                 x: Theme.horizontalPageMargin
                 text: qsTr("- Click on UID to enter passphrase to cache\n- Use pulldown to clear passphrases\n   or change gpg-agent config.")
                 color: Theme.secondaryHighlightColor

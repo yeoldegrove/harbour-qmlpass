@@ -26,7 +26,7 @@ Page {
 
     allowedOrientations: Orientation.All
 
-    property string resultPathString
+    property string resultPathString: "        "
 
     SilicaFlickable {
         anchors.fill: parent
@@ -69,15 +69,13 @@ Page {
             TextField {
                 id: resultPath
                 label: "path"
-                placeholderText: "path..."
                 text: resultPathString
                 readOnly: true
             }
             TextField {
                 id: resultLogin
                 label: "login"
-                placeholderText: "login..."
-                text: "                              "
+                text: "login..."
                 readOnly: true
                 onClicked: {
                     Clipboard.text = resultLogin.text
@@ -87,9 +85,7 @@ Page {
             PasswordField {
                 id: resultPassword
                 label: "password"
-                placeholderText: "password..."
-                //text: resultPasswordString
-                text: "                              "
+                text: "        "
                 echoMode: TextInput.Password
                 readOnly: true
                 // TODO: do the password clearing easier if possible
@@ -119,8 +115,7 @@ Page {
             TextField {
                 id: resultUrl
                 label: "url"
-                placeholderText: "url..."
-                text: "                              "
+                text: "url..."
                 readOnly: true
                 onClicked: {
                     Clipboard.text = resultUrl.text
@@ -130,7 +125,13 @@ Page {
             Label {
                 id: info
                 x: Theme.horizontalPageMargin
-                text: qsTr("password has been copied to clipboard.\nIt will be cleared after 30 seconds.\n\nUse pulldown to show password.")
+                text: {
+                    if ( resultPassword.text != "        " ) {
+                        qsTr("password has been copied to clipboard.\nIt will be cleared after 30 seconds.\n\nUse pulldown to show password.")
+                    } else {
+                        qsTr("No password could be decrypted.\nPlease cache your passphrase first.\nUse startpage's pulldown menu.\n\nIf you already did this,\nyour passphrase is wrong.")
+                    }
+                }
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeMedium
             }
@@ -155,6 +156,12 @@ Page {
             });
             importModule('passwordstore', function() {
                  call('passwordstore.passwordstore.show_pass', [resultPathString], function(result){
+                     function delay(delayTime, cb) {
+                         timer.interval = delayTime;
+                         timer.repeat = false;
+                         timer.triggered.connect(cb);
+                         timer.start();
+                     }
                      // WARNING!!! SHOWS PASSWORD IN CLEARTEXT IN DEBUG OUTPUT !!!
                      //console.log('got password: ' + result);
                      if (result.length > 0) {
