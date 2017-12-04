@@ -38,12 +38,6 @@ Page {
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
             MenuItem {
-                text: qsTr("create gpg-agent config")
-                onClicked: {
-                    py.call('gpg.gpg.create_agent_config', [], function() {});
-                }
-            }
-            MenuItem {
                 text: qsTr("Clear Passphrase / kill gpg-agent")
                 onClicked: {
                     py.call('gpg.gpg.kill_agent', [], function() {});

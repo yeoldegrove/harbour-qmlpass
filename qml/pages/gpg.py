@@ -21,6 +21,7 @@ import pyotherside
 import subprocess
 from subprocess import Popen, PIPE
 import os
+import re
 
 class gpg():
     def list_uids():
@@ -76,7 +77,7 @@ class gpg():
             pyotherside.send('stdout', out)
             pyotherside.send('stderr', err)
 
-    def create_agent_config():
+    def create_start_gpg_agent_file():
         # create start-gpg-agent.sh script to run at login
         config_dir = "/home/nemo/.config/harbour-qmlpass"
         if not os.path.exists(config_dir):
@@ -100,21 +101,65 @@ class gpg():
             bashrc_file = open("/home/nemo/.bashrc","a")
             bashrc_file.write("source /home/nemo/.config/harbour-qmlpass/start-gpg-agent.sh\n")
             bashrc_file.close()
+
+    def create_default_agent_config():
+        gpg.create_start_gpg_agent_file()
         # create .gnupg/gpg-agent.conf
         gpg_dir = "/home/nemo/.gnupg"
         if not os.path.exists(gpg_dir):
             os.makedirs(config_dir)
         gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        gpg_agent_conf = open(gpg_agent_conf_file,"w")
+        gpg_agent_conf_content = [
+            "default-cache-ttl 10800\n",
+            "max-cache-ttl 10800\n",
+            "enable-ssh-support\n",
+            "allow-preset-passphrase\n"
+        ]
+        gpg_agent_conf.writelines(gpg_agent_conf_content)
+        gpg_agent_conf.close()
+
+    def reset_default_agent_config():
+        gpg.create_start_gpg_agent_file()
+        # reset default in .gnupg/gpg-agent.conf
+        gpg_dir = "/home/nemo/.gnupg"
+        if not os.path.exists(gpg_dir):
+            os.makedirs(config_dir)
+        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        # reset default vaules where values
+        with open(gpg_agent_conf_file,"r") as file :
+            gpg_agent_conf_content = file.read()
+        gpg_agent_conf_content = re.sub("default-cache-ttl.*","default-cache-ttl 10800", gpg_agent_conf_content)
+        with open(gpg_agent_conf_file,"w") as file :
+            gpg_agent_conf_content = file.write(gpg_agent_conf_content)
+        with open(gpg_agent_conf_file,"r") as file :
+            gpg_agent_conf_content = file.read()
+        gpg_agent_conf_content = re.sub("max-cache-ttl.*","max-cache-ttl 10800", gpg_agent_conf_content)
+        with open(gpg_agent_conf_file,"w") as file :
+            gpg_agent_conf_content = file.write(gpg_agent_conf_content)
+        # attach parameter if not present
         gpg_agent_conf = open(gpg_agent_conf_file, "a")
         if not "default-cache-ttl" in open(gpg_agent_conf_file).read():
-            gpg_agent_conf.write("default-cache-ttl 10800\n")
+            gpg_agent_conf.write("\ndefault-cache-ttl 10800")
         if not "max-cache-ttl" in open(gpg_agent_conf_file).read():
-            gpg_agent_conf.write("max-cache-ttl 10800\n")
+            gpg_agent_conf.write("\nmax-cache-ttl 10800")
         if not "enable-ssh-support" in open(gpg_agent_conf_file).read():
-            gpg_agent_conf.write("enable-ssh-support\n")
+            gpg_agent_conf.write("\nenable-ssh-support")
         if not "allow-preset-passphrase" in open(gpg_agent_conf_file).read():
-            gpg_agent_conf.write("allow-preset-passphrase\n")
+            gpg_agent_conf.write("\nallow-preset-passphrase")
         gpg_agent_conf.close()
+
+    def read_agent_config():
+        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        with open(gpg_agent_conf_file, 'r') as gpg_agent_conf_file_content:
+            content = gpg_agent_conf_file_content.read()
+        pyotherside.send('stdout', content)
+        return content
+
+    def write_agent_config(input):
+        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        with open(gpg_agent_conf_file, 'w') as gpg_agent_conf_file_content:
+            gpg_agent_conf_file_content.write(input)
 
     def kill_agent():
         # find all gpg uids for all secret keys

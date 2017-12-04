@@ -7,6 +7,7 @@ DISTFILES += qml/qmlpass.qml \
     qml/pages/FirstPage.qml \
     qml/pages/ResultPage.qml \
     qml/pages/PassphrasePage.qml \
+    qml/pages/GPGAgent.qml \
     rpm/qmlpass.changes \
     rpm/qmlpass.changes.run.in \
     rpm/qmlpass.spec \

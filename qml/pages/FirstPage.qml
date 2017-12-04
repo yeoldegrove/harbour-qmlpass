@@ -32,8 +32,12 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("mange passphrase / gpg-agent")
+                text: qsTr("manage passphrases")
                 onClicked: pageStack.push(Qt.resolvedUrl("PassphrasePage.qml"))
+            }
+            MenuItem {
+                text: qsTr("manage gpg-agent config")
+                onClicked: pageStack.push(Qt.resolvedUrl("GPGAgent.qml"))
             }
             MenuItem {
                 text: qsTr("git pull")
