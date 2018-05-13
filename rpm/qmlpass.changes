@@ -1,4 +1,8 @@
-* Mon Dec 04 2017 Eike Waldt <jolla@yeoldegrove.de> 0.0.3-1
+* Sun May 13 2018 Eike Waldt <jolla@yeoldegrove.de> 0.4-1
+- fix bug:
+ - remove newline from output
+
+* Mon Dec 04 2017 Eike Waldt <jolla@yeoldegrove.de> 0.3-1
 - add feature: gpg-agent config
  - create default config
  - reset values to default
