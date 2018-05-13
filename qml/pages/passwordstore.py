@@ -51,7 +51,7 @@ class passwordstore():
         pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('login: ','')
+        out_replace = out.decode('utf-8').replace('login: ','').strip()
         output = out_replace
         return output
 
@@ -65,7 +65,7 @@ class passwordstore():
         # pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('login: ','')
+        out_replace = out.decode('utf-8').replace('login: ','').strip()
         output = out_replace
         return output
 
@@ -78,7 +78,7 @@ class passwordstore():
         pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('url: ','')
+        out_replace = out.decode('utf-8').replace('url: ','').strip()
         output = out_replace
         return output
 
@@ -91,6 +91,6 @@ class passwordstore():
         pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('url: ','')
+        out_replace = out.decode('utf-8').replace('url: ','').strip()
         output = out_replace
         return output
