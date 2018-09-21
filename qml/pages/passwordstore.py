@@ -18,8 +18,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import pyotherside
-import subprocess
 from subprocess import Popen, PIPE
+
 
 class passwordstore():
     def search(*args):
@@ -31,11 +31,11 @@ class passwordstore():
             p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
             out, err = p.communicate()
             # replace some strings (homedir, .gpg)
-            out_replace = out.decode('utf-8').replace('/home/nemo/.password-store/','').replace('.gpg','')
+            out_replace = out.decode('utf-8').replace('/home/nemo/.password-store/', '').replace('.gpg', '')
             # split result on newlines to get a list
             out_list = out_replace.split('\n')
             # remove empty list items
-            out_list = [ x for x in out_list if "" != x ]
+            out_list = [x for x in out_list if "" != x]
             output.append(out_list)
         # flaten the list (as we might have a sublist for each 'input'
         output = [item for sublist in output for item in sublist]
@@ -51,7 +51,7 @@ class passwordstore():
         pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('login: ','').strip()
+        out_replace = out.decode('utf-8').replace('login: ', '').strip()
         output = out_replace
         return output
 
@@ -65,7 +65,7 @@ class passwordstore():
         # pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('login: ','').strip()
+        out_replace = out.decode('utf-8').replace('login: ', '').strip()
         output = out_replace
         return output
 
@@ -78,7 +78,7 @@ class passwordstore():
         pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('url: ','').strip()
+        out_replace = out.decode('utf-8').replace('url: ', '').strip()
         output = out_replace
         return output
 
@@ -91,6 +91,6 @@ class passwordstore():
         pyotherside.send('stdout', out)
         pyotherside.send('stderr', err)
         # replace some strings (login: )
-        out_replace = out.decode('utf-8').replace('url: ','').strip()
+        out_replace = out.decode('utf-8').replace('url: ', '').strip()
         output = out_replace
         return output
