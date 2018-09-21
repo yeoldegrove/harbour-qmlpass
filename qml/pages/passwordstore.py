@@ -43,7 +43,7 @@ class passwordstore():
 
     def show_login(input):
         output = []
-        # find all files matching input and end with .gpg
+        # look at login from pass output
         cmd = "pass show " + input + " | grep '^login:'"
         print(cmd)
         p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
@@ -57,7 +57,7 @@ class passwordstore():
 
     def show_pass(input):
         output = []
-        # find all files matching input and end with .gpg
+        # show password
         cmd = "pass show " + input + " | head -1"
         p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
@@ -71,7 +71,7 @@ class passwordstore():
 
     def show_url(input):
         output = []
-        # find all files matching input and end with .gpg
+        # look at url from pass output
         cmd = "pass show " + input + " | grep '^url:'"
         p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
@@ -84,8 +84,7 @@ class passwordstore():
 
     def git_pull():
         output = []
-        # find all files matching input and end with .gpg
-        cmd = "cd  /home/nemo/.password-store && git pull"
+        cmd = "pass git pull"
         p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
         pyotherside.send('stdout', out)
