@@ -26,24 +26,40 @@ PSDIR = os.path.join(os.path.expanduser('~'), '.password-store')
 
 class passwordstore():
     def search(*args):
+        text = args[0]
         ps_dir = '{}/'.format(PSDIR)
-        inputs = list(args)
+        inputs = [word.lower() for word in text.split()]
         output = []
-        for input in inputs:
-            # find all files matching input and end with .gpg
-            cmd = "find " + PSDIR + " -iname '*" + input + "*.gpg'"
-            p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
-            out, err = p.communicate()
-            # replace some strings (homedir, .gpg)
-            out_replace = out.decode('utf-8').replace(ps_dir, '').replace('.gpg', '')
-            # split result on newlines to get a list
-            out_list = out_replace.split('\n')
-            # remove empty list items
-            out_list = [x for x in out_list if "" != x]
-            output.append(out_list)
-        # flaten the list (as we might have a sublist for each 'input'
-        output = [item for sublist in output for item in sublist]
-        return output[:]
+
+        # find all files matching input and end with .gpg
+        cmd = "find " + PSDIR + " -iname '*.gpg'"
+        p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
+        out, err = p.communicate()
+        # replace some strings (homedir, .gpg)
+        out_replace = out.decode('utf-8').replace(ps_dir, '').replace('.gpg', '')
+        # split result on newlines to get a list
+        out_list = out_replace.split('\n')
+
+        # see if we can find our searches
+        for candidate in out_list:
+            if not candidate:
+                continue
+
+            found_count = 0
+            idx = 0
+            for input in inputs:
+                # this ensures the words are searched in order
+                idx = candidate[idx:].lower().find(input)
+
+                if idx == -1:
+                    break
+                else:
+                    found_count += 1
+
+            if found_count == len(inputs):
+                output.append(candidate)
+
+        return sorted(output)
 
     def show_login(input):
         output = []
