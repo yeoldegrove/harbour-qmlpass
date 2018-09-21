@@ -17,21 +17,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import pyotherside
 from subprocess import Popen, PIPE
+
+PSDIR = os.path.join(os.path.expanduser('~'), '.password-store')
 
 
 class passwordstore():
     def search(*args):
+        ps_dir = '{}/'.format(PSDIR)
         inputs = list(args)
         output = []
         for input in inputs:
             # find all files matching input and end with .gpg
-            cmd = "find /home/nemo/.password-store -iname '*" + input + "*.gpg'"
+            cmd = "find " + PSDIR + " -iname '*" + input + "*.gpg'"
             p = Popen(["bash", "-c", cmd], stdout=PIPE, stderr=PIPE)
             out, err = p.communicate()
             # replace some strings (homedir, .gpg)
-            out_replace = out.decode('utf-8').replace('/home/nemo/.password-store/', '').replace('.gpg', '')
+            out_replace = out.decode('utf-8').replace(ps_dir, '').replace('.gpg', '')
             # split result on newlines to get a list
             out_list = out_replace.split('\n')
             # remove empty list items
