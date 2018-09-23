@@ -30,6 +30,7 @@ BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
+Obsoletes:  qmlpass
 
 %description
 This is a QML frontend for the standard unix password manager.
