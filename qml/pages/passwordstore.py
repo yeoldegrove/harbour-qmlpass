@@ -24,11 +24,34 @@ from subprocess import Popen, PIPE
 PSDIR = os.path.join(os.path.expanduser('~'), '.password-store')
 
 
+def _does_match(candidate, inputs, *, idx=0):
+    """Recursively search candidate for given inputs.
+    Returns if all the inputs are exhausted or something is definitely not found
+    """
+
+    # When inputs is exhausted, we have found all we need
+    if len(inputs) == 0:
+        return True
+
+    input = inputs[0]  # Cannot mutate the list, as it would affect the caller as well
+    idx = candidate.lower().find(input.lower())
+
+    # Immediately abort if nothing is found...
+    if idx == -1:
+        return False
+
+    # ... or look at the next part of the candidate ...
+    candidate = candidate[(idx + 1):]
+
+    # ... with the remaining inputs
+    return _does_match(candidate, inputs[1:], idx=idx)
+
+
 class passwordstore():
     def search(*args):
         text = args[0]
         ps_dir = '{}/'.format(PSDIR)
-        inputs = [word.lower() for word in text.split()]
+        inputs = text.split()
         output = []
 
         # find all files matching input and end with .gpg
@@ -41,23 +64,7 @@ class passwordstore():
         out_list = out_replace.split('\n')
 
         # see if we can find our searches
-        for candidate in out_list:
-            if not candidate:
-                continue
-
-            found_count = 0
-            idx = 0
-            for input in inputs:
-                # this ensures the words are searched in order
-                idx = candidate[idx:].lower().find(input)
-
-                if idx == -1:
-                    break
-                else:
-                    found_count += 1
-
-            if found_count == len(inputs):
-                output.append(candidate)
+        output = [candidate for candidate in out_list if _does_match(candidate, inputs)]
 
         return sorted(output)
 
