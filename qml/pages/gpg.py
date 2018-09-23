@@ -79,7 +79,7 @@ class gpg():
 
     def create_start_gpg_agent_file():
         # create start-gpg-agent.sh script to run at login
-        config_dir = "/home/nemo/.config/harbour-qmlpass"
+        config_dir = "~/.config/harbour-qmlpass"
         if not os.path.exists(config_dir):
             os.makedirs(config_dir)
         start_gpg_agent_file = open(config_dir + "/start-gpg-agent.sh","w")
@@ -97,18 +97,18 @@ class gpg():
         start_gpg_agent_file.writelines(start_gpg_agent_content)
         start_gpg_agent_file.close()
         # add start-gpg-agent.sh to .bashrc
-        if not "source /home/nemo/.config/harbour-qmlpass/start-gpg-agent.sh" in open('/home/nemo/.bashrc').read():
-            bashrc_file = open("/home/nemo/.bashrc","a")
-            bashrc_file.write("source /home/nemo/.config/harbour-qmlpass/start-gpg-agent.sh\n")
+        if not "source ~/.config/harbour-qmlpass/start-gpg-agent.sh" in open('~/.bashrc').read():
+            bashrc_file = open("~/.bashrc","a")
+            bashrc_file.write("source ~/.config/harbour-qmlpass/start-gpg-agent.sh\n")
             bashrc_file.close()
 
     def create_default_agent_config():
         gpg.create_start_gpg_agent_file()
         # create .gnupg/gpg-agent.conf
-        gpg_dir = "/home/nemo/.gnupg"
+        gpg_dir = "~/.gnupg"
         if not os.path.exists(gpg_dir):
             os.makedirs(config_dir)
-        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        gpg_agent_conf_file = "~/.gnupg/gpg-agent.conf"
         gpg_agent_conf = open(gpg_agent_conf_file,"w")
         gpg_agent_conf_content = [
             "default-cache-ttl 10800\n",
@@ -122,10 +122,10 @@ class gpg():
     def reset_default_agent_config():
         gpg.create_start_gpg_agent_file()
         # reset default in .gnupg/gpg-agent.conf
-        gpg_dir = "/home/nemo/.gnupg"
+        gpg_dir = "~/.gnupg"
         if not os.path.exists(gpg_dir):
             os.makedirs(config_dir)
-        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        gpg_agent_conf_file = "~/.gnupg/gpg-agent.conf"
         # reset default vaules where values
         with open(gpg_agent_conf_file,"r") as file :
             gpg_agent_conf_content = file.read()
@@ -150,14 +150,14 @@ class gpg():
         gpg_agent_conf.close()
 
     def read_agent_config():
-        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        gpg_agent_conf_file = "~/.gnupg/gpg-agent.conf"
         with open(gpg_agent_conf_file, 'r') as gpg_agent_conf_file_content:
             content = gpg_agent_conf_file_content.read()
         pyotherside.send('stdout', content)
         return content
 
     def write_agent_config(input):
-        gpg_agent_conf_file = "/home/nemo/.gnupg/gpg-agent.conf"
+        gpg_agent_conf_file = "~/.gnupg/gpg-agent.conf"
         with open(gpg_agent_conf_file, 'w') as gpg_agent_conf_file_content:
             gpg_agent_conf_file_content.write(input)
 
