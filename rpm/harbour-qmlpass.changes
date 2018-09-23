@@ -1,3 +1,19 @@
+* Sun Sep 23 2018 Eike Waldt <jolla@yeoldegrove.de> 0.5-1
+- removed old icons
+- fixed icon sizes
+- renamed to harbour-qmlpass to meet jolla guideline
+- fix hardcoded home
+- add "Obsoletes: qmlpass" to specfile
+
+* Sun Sep 23 2018 Markus Törnqvist <mjt@nysv.org>
+- Fix bug that certain invalid input caused a match
+
+* Fri Sep 21 2018 Markus Törnqvist <mjt@nysv.org>
+- Fix some pep complaints
+- Fix comments and change to pass git pull
+- Make path more generic, easier to dev on a computer
+- A somewhat more versatile search algorithm
+
 * Sun May 13 2018 Eike Waldt <jolla@yeoldegrove.de> 0.4-1
 - fix bug:
  - remove newline from output
