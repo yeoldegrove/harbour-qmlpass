@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=qmlpass
-Exec=sailfish-qml qmlpass
+Icon=harbour-qmlpass
+Exec=sailfish-qml harbour-qmlpass
 Name=qmlpass
 # translation example:
 # your app name in German locale (de)
