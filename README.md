@@ -47,6 +47,11 @@ or here
 
 http://repo.merproject.org/obs/home:/yeoldegrove:/crypt/sailfish_latest_armv7hl/
 
+### renamed the repo
+The repo and rpm was renamed (2018/09/23) to "harbour-qmlpass" to meet with jollas guidelines.
+
+Should you experience issue from updating from 0.4 to 0.5 please remove and add the app via harbour/zypper and do a reboot.
+
 ### thanks
 
 Many thanks to zx2c4, pass is great.
